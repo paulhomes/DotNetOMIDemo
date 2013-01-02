@@ -1,7 +1,7 @@
 DotNetOMIDemo
 =============
 
-DotNetOMIDemo is a simple demo of using the
+DotNetOMIDemo is a demo of using the
 [SAS® Open Metadata Interface](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#titlepage.htm)
 (OMI) from the .NET platform.
 
@@ -18,10 +18,13 @@ on the command line, to execute an IOMI method and print the resulting XML to th
 
 The demo uses the lower level IOMI class to work with the SAS metadata server through its XML 
 interface. It shows how to obtain a connection to a SAS metadata server programmatically (without
-using any XML config files) and then execute an IOMI method. Currently it only calls the IOMI
-[GetRepositories](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#n0b9vyxiwd9cgkn1dzm8018mrkx2.htm)
-method as a very simple example to list the available metadata repositories.
-I may update the demo in future with examples of additional IOMI method calls.
+using any XML config files) and then executes a specified IOMI method (specified in the task
+option and defaults to GetRepositories).
+
+The following tasks names can be used to execute the same named IOMI method:
+* [GetRepositories](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#n0b9vyxiwd9cgkn1dzm8018mrkx2.htm) lists the available metadata repositories.
+* [GetNamespaces](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#p1loqrvamaiyzln1ms7fbl3s3cx2.htm) lists the namespaces (SAS and REPOS).
+* [GetTypes](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#n0j88d11kugi07n1bc7y3eyftoag.htm) lists the metadata model types in the specified namespace.
 
 This git repository depends upon but does not include any SAS software or libraries. 
 If you want to build and run this demo you must have seperately licensed and installed
@@ -97,12 +100,12 @@ text or in SAS
 Usage information, together with command line options, can be obtained by running
 `DotNetOMIDemo.exe --help` which will generate the following output:
 
-    DotNetOMIDemo 1.0
+    DotNetOMIDemo 1.1
     Copyright © 2012 Paul Homes
     DotNetOMIDemo is licensed under the terms of the MIT License
     <http://opensource.org/licenses/MIT>.
-    Usage: DotNetOMIDemo.exe --host=<hostname> --port=<port> --user=<user> --password=<password>
-           DotNetOMIDemo.exe --host localhost --port=8561 --user='sasadm@saspw' --password='secret'
+    Usage: DotNetOMIDemo.exe --host=<hostname> --port=<port> --user=<user> --password=<password> [--task=<task>] [other task options]
+           DotNetOMIDemo.exe --host localhost --port=8561 --user='sasadm@saspw' --password='secret' --task=GetTypes SAS
 
       -h, --host        SAS metadata server host name (default=localhost)
     
@@ -114,15 +117,25 @@ Usage information, together with command line options, can be obtained by runnin
     
       -v, --verbose     Enable verbose output
     
+      -k, --task        Metadata task name (default=GetRepositories)
+    
       --help            Display this help screen.
   
 ### Examples
 
-Here are a couple of command line examples:
+Here are a few command line examples:
 
     bin\Release\DotNetOMIDemo.exe -h sasmeta.example.com -t 8563 -u sasdemo -p secret
     
     bin\Release\DotNetOMIDemo.exe --host="sasmeta.example.com" --port=8563 --user="sasdemo" --password="{SAS002}B87C6F3C16DD10DE179AC3C3"
+
+    bin\Release\DotNetOMIDemo.exe --host="sasmeta.example.com" --port=8563 --user="sasdemo" --password="{SAS002}B87C6F3C16DD10DE179AC3C3" --task GetRepositories
+
+    bin\Release\DotNetOMIDemo.exe --host="sasmeta.example.com" --port=8563 --user="sasdemo" --password="{SAS002}B87C6F3C16DD10DE179AC3C3" --task GetNamespaces
+
+    bin\Release\DotNetOMIDemo.exe --host="sasmeta.example.com" --port=8563 --user="sasdemo" --password="{SAS002}B87C6F3C16DD10DE179AC3C3" --task GetTypes REPOS
+
+    bin\Release\DotNetOMIDemo.exe --host="sasmeta.example.com" --port=8563 --user="sasdemo" --password="{SAS002}B87C6F3C16DD10DE179AC3C3" --task GetTypes SAS
 
 Reference Documentation
 =======================

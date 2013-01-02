@@ -33,7 +33,7 @@ License
 =======
 
 DotNetOMIDemo is licensed under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-See [LICENSE.md](LICENSE.md) for more information.
+See LICENSE.md for more information.
 
 DotNetOMIDemo includes source code from the
 [Command Line Parser Library](https://github.com/gsscoder/commandline)

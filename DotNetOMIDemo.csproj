@@ -75,6 +75,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetTypePropertiesTask.cs" />
+    <Compile Include="OMITask.cs" />
+    <Compile Include="GetTypesTask.cs" />
+    <Compile Include="GetRepositoriesTask.cs" />
+    <Compile Include="GetNamespacesTask.cs" />
     <Compile Include="CommandLine.cs" />
     <Compile Include="CommandLineText.cs" />
     <Compile Include="DotNetOMIDemo.cs" />

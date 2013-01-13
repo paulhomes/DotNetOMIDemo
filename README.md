@@ -24,8 +24,9 @@ option and defaults to GetRepositories).
 The following tasks names can be used to execute the same named IOMI method:
 * [GetRepositories](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#n0b9vyxiwd9cgkn1dzm8018mrkx2.htm) lists the available metadata repositories.
 * [GetNamespaces](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#p1loqrvamaiyzln1ms7fbl3s3cx2.htm) lists the namespaces (SAS and REPOS).
-* [GetTypes](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#n0j88d11kugi07n1bc7y3eyftoag.htm) lists the metadata model types in the specified namespace.
-* [GetTypeProperties](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#n073f2ffpagfygn1d7kafa6tdaec.htm) lists the properties (attributes and associations) for a specified metadata model type in the specified namespace.
+* [GetTypes](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#n0j88d11kugi07n1bc7y3eyftoag.htm) lists the metadata model types in a specified namespace.
+* [GetTypeProperties](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#n073f2ffpagfygn1d7kafa6tdaec.htm) lists the properties (attributes and associations) for a specified metadata model type in a specified namespace.
+* [GetSubtypes](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#p1gtv84j8qeycfn1qgao6a5ztzhe.htm) lists the immediate sub-types for a specified metadata model type in a specified namespace.
 
 This git repository depends upon but does not include any SAS software or libraries. 
 If you want to build and run this demo you must have seperately licensed and installed
@@ -144,6 +145,8 @@ Here are a few command line examples:
     bin\Release\DotNetOMIDemo.exe --host="sasmeta.example.com" --port=8563 --user="sasdemo" --password="{SAS002}B87C6F3C16DD10DE179AC3C3" --task GetTypes SAS
 
     bin\Release\DotNetOMIDemo.exe --host="sasmeta.example.com" --port=8563 --user="sasdemo" --password="{SAS002}B87C6F3C16DD10DE179AC3C3" --task GetTypeProperties SAS Person
+
+    bin\Release\DotNetOMIDemo.exe --host="sasmeta.example.com" --port=8563 --user="sasdemo" --password="{SAS002}B87C6F3C16DD10DE179AC3C3" --task GetSubtypes SAS Identity
 
 Reference Documentation
 =======================

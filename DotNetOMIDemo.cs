@@ -114,6 +114,7 @@ namespace DotNetOMIDemo
                 Dictionary<string, OMITask> tasks = new Dictionary<string, OMITask>();
                 tasks.Add("GetNamespaces", new GetNamespacesTask());
                 tasks.Add("GetRepositories", new GetRepositoriesTask());
+                tasks.Add("GetSubtypes", new GetSubtypesTask());
                 tasks.Add("GetTypes", new GetTypesTask());
                 tasks.Add("GetTypeProperties", new GetTypePropertiesTask());
 

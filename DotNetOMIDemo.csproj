@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetMetadataObjectsTask.cs" />
     <Compile Include="GetSubtypesTask.cs" />
     <Compile Include="GetTypePropertiesTask.cs" />
     <Compile Include="OMITask.cs" />

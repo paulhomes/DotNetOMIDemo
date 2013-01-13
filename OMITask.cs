@@ -28,8 +28,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 using SAS.BI.AuthenticationService.ClientUserContext;
 using SASObjectManager;
 
@@ -196,6 +199,51 @@ namespace DotNetOMIDemo
                 userContext.Dispose();
                 userContext = null;
             }
+        }
+
+        /// <summary>
+        /// Uses the SAS Metadata API GetRepositories method to fetch a list of metadata
+        /// repositories, locate the Foundation repository and, if found, returns the
+        /// Foundation repository id.
+        /// </summary>
+        /// <returns>The repository if for the Foundation repository, or null if not found.</returns>
+        protected string getFoundationRepositoryId()
+        {
+            if (Options.Verbose)
+            {
+                Console.WriteLine("Determining Foundation repository id.");
+            }
+            int omiFlags = (int)SASOMI.CONSTANTS.OMI_ALL;
+            string omiOptions = "";
+            string reposXml;
+            int rc = IOMI.GetRepositories(out reposXml, omiFlags, omiOptions);
+            if (Options.Verbose)
+            {
+                Console.WriteLine("Successfully run IOMI GetRepositories method. Return code={0}. XML response follows:", rc);
+                Console.WriteLine(FormatXml(reposXml));
+            }
+
+            // Now we have the repositories XML 
+
+            // The GetRepositories response XML should look like this:
+            // <Repositories>
+            // <Repository Id="A0000001.A0000001" Name="REPOSMGR" Desc="The Repository Manager" DefaultNS="REPOS" RepositoryType="" RepositoryFormat="12" Access="OMS_FULL" CurrentAccess="OMS_FULL" PauseState="" Path="rposmgr" />
+            // <Repository Id="A0000001.AXXXXXXX" Name="Foundation" Desc="" DefaultNS="SAS" RepositoryType="FOUNDATION" RepositoryFormat="12" Access="OMS_FULL" CurrentAccess="OMS_FULL" PauseState="" Path="MetadataRepositories/Foundation" />
+            // <Repository Id="A0000001.AYYYYYYY" Name="BILineage" Desc="BILineage" DefaultNS="SAS" RepositoryType="CUSTOM" RepositoryFormat="12" Access="OMS_FULL" CurrentAccess="OMS_FULL" PauseState="" Path="MetadataRepositories/BILineage" />
+            // </Repositories>
+
+            string foundationId = null;
+            XDocument reposDoc = XDocument.Parse(reposXml);
+            XElement foundation = reposDoc.XPathSelectElement("//Repository[@RepositoryType='FOUNDATION']");
+            if (foundation != null)
+            {
+                foundationId = foundation.Attribute("Id").Value;
+                if (Options.Verbose)
+                {
+                    Console.WriteLine("Foundation repository id={0}", foundationId);
+                }
+            }
+            return foundationId;
         }
 
         /// <summary>

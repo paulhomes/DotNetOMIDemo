@@ -112,6 +112,7 @@ namespace DotNetOMIDemo
             {
                 // Build a named list of known metadata tasks.
                 Dictionary<string, OMITask> tasks = new Dictionary<string, OMITask>();
+                tasks.Add("GetMetadataObjects", new GetMetadataObjectsTask());
                 tasks.Add("GetNamespaces", new GetNamespacesTask());
                 tasks.Add("GetRepositories", new GetRepositoriesTask());
                 tasks.Add("GetSubtypes", new GetSubtypesTask());

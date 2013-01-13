@@ -27,6 +27,7 @@ The following tasks names can be used to execute the same named IOMI method:
 * [GetTypes](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#n0j88d11kugi07n1bc7y3eyftoag.htm) lists the metadata model types in a specified namespace.
 * [GetTypeProperties](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#n073f2ffpagfygn1d7kafa6tdaec.htm) lists the properties (attributes and associations) for a specified metadata model type in a specified namespace.
 * [GetSubtypes](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#p1gtv84j8qeycfn1qgao6a5ztzhe.htm) lists the immediate sub-types for a specified metadata model type in a specified namespace.
+* [GetMetadataObjects](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#p1ss18521wihb2n1kh35xc0n0cpy.htm) lists all metadata objects for a specified metadata model type in a specified namespace.
 
 This git repository depends upon but does not include any SAS software or libraries. 
 If you want to build and run this demo you must have seperately licensed and installed
@@ -105,7 +106,7 @@ text or in SAS
 Usage information, together with command line options, can be obtained by running
 `DotNetOMIDemo.exe --help` which will generate the following output:
 
-    DotNetOMIDemo 1.3
+    DotNetOMIDemo 1.4
     Copyright © 2012-2013 Paul Homes
     DotNetOMIDemo is licensed under the terms of the MIT License
     <http://opensource.org/licenses/MIT>.
@@ -147,6 +148,8 @@ Here are a few command line examples:
     bin\Release\DotNetOMIDemo.exe --host="sasmeta.example.com" --port=8563 --user="sasdemo" --password="{SAS002}B87C6F3C16DD10DE179AC3C3" --task GetTypeProperties SAS Person
 
     bin\Release\DotNetOMIDemo.exe --host="sasmeta.example.com" --port=8563 --user="sasdemo" --password="{SAS002}B87C6F3C16DD10DE179AC3C3" --task GetSubtypes SAS Identity
+
+    bin\Release\DotNetOMIDemo.exe --host="sasmeta.example.com" --port=8563 --user="sasdemo" --password="{SAS002}B87C6F3C16DD10DE179AC3C3" --task GetMetadataObjects SAS Person
 
 Reference Documentation
 =======================

@@ -29,6 +29,7 @@
 
 using CommandLine;
 using CommandLine.Text;
+using SAS.BI.AuthenticationService.ClientUserContext;
 using SASObjectManager;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,9 @@ namespace DotNetOMIDemo
 
             [Option("p", "password", Required = true, HelpText = "SAS metadata server password")]
             public string Password { get; set; }
+
+            [Option("d", "authdomain", DefaultValue = null, HelpText = "SAS metadata server authentication domain (default=blank)")]
+            public string AuthDomain { get; set; }
 
             [Option("v", "verbose", HelpText = "Enable verbose output")]
             public bool Verbose { get; set; }
@@ -123,7 +127,7 @@ namespace DotNetOMIDemo
         /// </remarks>
         public abstract class OMITask
         {
-            private ObjectFactoryMulti2 objectFactory;
+            private UserContext userContext;
             private SASOMI.IOMI iomi;
 
             /// <summary>
@@ -132,17 +136,17 @@ namespace DotNetOMIDemo
             public Options Options { get; set; }
 
             /// <summary>
-            /// The object factory used to obtain a metadata connection.
+            /// The user context used to obtain a metadata connection.
             /// </summary>
-            public ObjectFactoryMulti2 ObjectFactory
+            public UserContext UserContext
             {
                 get
                 {
-                    return objectFactory;
+                    return userContext;
                 }
                 private set
                 {
-                    objectFactory = value;
+                    userContext = value;
                 }
             }
 
@@ -222,29 +226,12 @@ namespace DotNetOMIDemo
 
             private void connect()
             {
-                // Construct configuration for the SAS metadata server connection.
-                ServerDef serverDef = new ServerDef();
-                // NOTE: sasoman.chm > ServerDef > ClassIdentifier Property says 
-                // OMR is 2887E7D7-4780-11D4-879F-00C04F38F0DB but that doesn't 
-                // seem to work. A manually generated XML config
-                // (C:\Users\userid\AppData\Roaming\SAS\MetadataServer\oms_serverinfo2.xml)
-                // using C:\Program Files\SAS\SharedFiles\Integration Technologies\ITConfig2.exe
-                // has ClassIdentifier="0217E202-B560-11DB-AD91-001083FF6836".  This does work.
-                serverDef.ClassIdentifier = "0217E202-B560-11DB-AD91-001083FF6836";
-                // NOTE: sasoman.chm > ServerDef > ProgID Property says it's an alternative to
-                // ClassIdentifier.
-                // serverDef.ProgID = "SASOMI.OMI.1.0";
-                serverDef.Protocol = SASObjectManager.Protocols.ProtocolBridge;
-                serverDef.BridgeEncryptionLevel = SASObjectManager.EncryptionLevels.EncryptUserAndPassword;
-                //serverDef.BridgeEncryptionAlgorithm = "SASProprietary";
-                serverDef.MachineDNSName = Options.Host;
                 // Validate 0 < port < 65536
                 if (Options.Port < 1 || Options.Port > 65535)
                 {
                     throw new ArgumentOutOfRangeException("port", Options.Port,
                         "SAS metadata server port number must be in the range 1...65535.");
                 }
-                serverDef.Port = Options.Port;
 
                 // Get an object factory and make a connection to the SAS metadata server connection.
                 if (Options.Verbose)
@@ -252,43 +239,42 @@ namespace DotNetOMIDemo
                     Console.WriteLine("Attempting to connect to SAS metadata server {0}:{1} as user '{2}'.",
                         Options.Host, Options.Port, Options.User);
                 }
-                objectFactory = new SASObjectManager.ObjectFactoryMulti2();
+
+                Login login;
+                // TODO: support IWA with new option that leaves login as null.
+                login = new Login(Options.User, Options.Password, Options.AuthDomain);
                 try
                 {
-                    iomi = (SASOMI.IOMI)ObjectFactory.CreateOMRConnection(serverDef, Options.User, Options.Password);
+                    userContext = new UserContext();
+                    userContext.SetOmrCredentials(login, Options.Host, Options.Port);
+                    Repository repository = userContext.GetRepository();
+                    iomi = (SASOMI.IOMI) repository.IOmi;
                     if (Options.Verbose)
                     {
-                        Console.WriteLine("Successfully connected to SAS metadata server.");
+                        Console.WriteLine("Successfully connected to SAS metadata server as '{0}' ({1})", 
+                            userContext.GetUserName(), userContext.ResolvedIdentity);
                     }
                 }
-                catch (System.Runtime.InteropServices.COMException)
+                catch (UserContextException)
                 {
                     // Log the connection failure and rethrow (to be handled higher up).
                     Console.WriteLine("ERROR: Failed to connect to the SAS metadata server.");
                     throw;
                 }
-
             }
 
             private void disconnect()
             {
                 // Disconnect from the metadata server.
-                // TODO: what is the correct way of disconnecting the metadata connection in .NET?
-                // There appear to be no API close, dispose, disconnect methods.
-                // Marshal.ReleaseComObject appears to do the trick but I'm not sure it's the best way.
-                if (iomi != null)
+                iomi = null;
+                if (userContext != null)
                 {
                     if (Options.Verbose)
                     {
                         Console.WriteLine("Disconnecting from SAS metadata server.");
                     }
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(iomi);
-                    iomi = null;
-                }
-                if (objectFactory != null)
-                {
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(ObjectFactory);
-                    objectFactory = null;
+                    userContext.Dispose();
+                    userContext = null;
                 }
             }
 

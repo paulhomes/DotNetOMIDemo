@@ -77,8 +77,11 @@ Building the Demo
 
 Open the _DotNetOMIDemo.sln_ file in Microsoft Visual Studio. Resolve any broken references
 to the SAS assemblies by pointing to the location of your _SAS Integration Technologies Client_
-installation. The demo includes references to the following SAS assemblies:
-* SASOMIInterop.dll (which for me is in C:\Program Files\SAS\SharedFiles\Integration Technologies)
+installation. The demo includes references to the following SAS assemblies
+(which for me are all in C:\Program Files\SAS\SharedFiles\Integration Technologies):
+* UserContext.dll
+* Utilities.dll
+* SASOMIInterop.dll
 
 Use the _BUILD_ > _Build Solution_ menu items to generate the _DotNetOMIDemo.exe_ file in
 the _bin/Release_ directory. If you have the SAS Integration Technologies Client references
@@ -100,26 +103,28 @@ text or in SAS
 Usage information, together with command line options, can be obtained by running
 `DotNetOMIDemo.exe --help` which will generate the following output:
 
-    DotNetOMIDemo 1.1
+    DotNetOMIDemo 1.2
     Copyright © 2012 Paul Homes
     DotNetOMIDemo is licensed under the terms of the MIT License
     <http://opensource.org/licenses/MIT>.
-    Usage: DotNetOMIDemo.exe --host=<hostname> --port=<port> --user=<user> --password=<password> [--task=<task>] [other task options]
+    Usage: DotNetOMIDemo.exe --host=<hostname> --port=<port> --user=<user> --password=<password> [--authdomain=<domain>] [--task=<task>] [other task options]
            DotNetOMIDemo.exe --host localhost --port=8561 --user='sasadm@saspw' --password='secret' --task=GetTypes SAS
 
-      -h, --host        SAS metadata server host name (default=localhost)
+      -h, --host          SAS metadata server host name (default=localhost)
     
-      -t, --port        SAS metadata server port number (default=8561)
+      -t, --port          SAS metadata server port number (default=8561)
     
-      -u, --user        Required. SAS metadata server user id
+      -u, --user          Required. SAS metadata server user id
     
-      -p, --password    Required. SAS metadata server password
+      -p, --password      Required. SAS metadata server password
     
-      -v, --verbose     Enable verbose output
+      -d, --authdomain    SAS metadata server authentication domain (default=blank)
     
-      -k, --task        Metadata task name (default=GetRepositories)
+      -v, --verbose       Enable verbose output
     
-      --help            Display this help screen.
+      -k, --task          Metadata task name (default=GetRepositories)
+    
+      --help              Display this help screen.
   
 ### Examples
 
@@ -147,8 +152,8 @@ You may find the following documentation references useful when reviewing or ext
   * [Programming in the .NET Environment](http://support.sas.com/documentation/cdl/en/itechwcdg/62763/HTML/default/viewer.htm#p1t48e0y92v4jqn1csygma6z7178.htm)
 * _SAS® 9.3 Open Metadata Interface: Reference and Usage_: [Metadata Access (IOMI Interface)](http://support.sas.com/documentation/cdl/en/omaref/63063/HTML/default/viewer.htm#p1i3uxspauhglsn1osxyp1bu9j7q.htm)
 * [SAS® 9.3 Metadata Model: Reference](http://support.sas.com/documentation/cdl/en/omamodref/63903/HTML/default/viewer.htm#titlepage.htm)
+* AuthenticationService Help File from the locally installed _SAS Integration Technologies Client_ (e.g. C:\Program Files\SAS\SharedFiles\Integration Technologies\AuthenticationService.chm)
 * SASObjectManager Help File from the locally installed _SAS Integration Technologies Client_ (e.g. C:\Program Files\SAS\SharedFiles\Integration Technologies\sasoman.chm)
-
 
 Trademarks
 ==========

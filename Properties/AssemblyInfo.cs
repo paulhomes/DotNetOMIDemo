@@ -32,14 +32,14 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.1.*")]
-//[assembly: AssemblyVersion("1.1.0.0")]
-//[assembly: AssemblyFileVersion("1.1.0.0")]
-[assembly: AssemblyInformationalVersionAttribute("1.1")]
+[assembly: AssemblyVersion("1.2.*")]
+//[assembly: AssemblyVersion("1.2.0.0")]
+//[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: AssemblyInformationalVersionAttribute("1.2")]
 
 // from CommandLineParser.Text
 [assembly: AssemblyLicense(
   "DotNetOMIDemo is licensed under the terms of the MIT License <http://opensource.org/licenses/MIT>.")]
 [assembly: AssemblyUsage(
-  "Usage: DotNetOMIDemo.exe --host=<hostname> --port=<port> --user=<user> --password=<password> [--task=<task>] [other task options]",
+  "Usage: DotNetOMIDemo.exe --host=<hostname> --port=<port> --user=<user> --password=<password> [--authdomain=<domain>] [--task=<task>] [other task options]",
   "       DotNetOMIDemo.exe --host localhost --port=8561 --user='sasdemo' --password='secret' --task=GetTypes SAS")]
